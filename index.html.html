@@ -1,0 +1,141 @@
+<!-- Oscar Chiqui | Lab: Intro to JavaScript | Class: 2560-60 Web Client Server. 
+A page to generate a list of student members for a student club.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Club Membership</title>
+
+    <style>
+
+        .selected {
+            text-decoration: line-through ;
+            font-style: italic;
+            color: gray;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 5px 5px 0px;
+            box-sizing: border-box;
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Student Club Roster</h1>
+
+<h2>Add Students</h2>
+
+<label for="student-name">Student Name</label><input id="student-name" name="student-name">
+<br>
+<label for="student-id">Student ID</label><input id="student-id" name="student-id">
+<br>
+<label for="student-gpa">Student GPA</label><input id="student-gpa" name="student-gpa" type="number">
+<br>
+<button id="add-student">Add Student</button>
+
+<h2>Student List</h2>
+
+<p>There are
+    <span id="student-count"></span> student(s) in the club.</p>
+
+
+<ul id="student-list">
+    <!-- use JavaScript to create li elements  -->
+</ul>
+
+<button id="remove-selected-students">Remove selected students</button>
+
+<script>
+
+    // locate elements and assign to variables
+    let addButton = document.querySelector('button#add-student');
+    let removeButton = document.querySelector('#remove-selected-students');
+    let studentCountMessage = document.querySelector('span#student-count');
+    let studentList = document.querySelector('ul#student-list');
+    let studentName = document.querySelector('#student-name');
+    let studentId = document.querySelector('#student-id');
+    let studentGpa = document.querySelector('#student-gpa');
+    // initial value for student count message
+    studentCountMessage.innerHTML = '0';
+
+    // listener for when the add button is clicked
+    addButton.addEventListener('click', function(){
+        // store values from user entry
+        let nameValue = studentName.value;
+        let idValue = studentId.value;
+        let gpaValue = studentGpa.value;
+        // initialize string for alert message
+        let alarmString = '';
+
+            // conditionals to build alarm string
+            if (nameValue.length === 0){
+                alarmString += 'Enter Name\n'
+            }
+            if (idValue.length === 0){
+                alarmString += 'Enter Student ID\n'
+            }
+            if (gpaValue < 0 || gpaValue > 4 || gpaValue.length === 0){
+                alarmString += 'Enter GPA between 0 and 4'
+            }
+
+            // validation for user entry
+        if (nameValue.length === 0 || idValue === 0 || gpaValue > 4 || gpaValue <0 || gpaValue.length === 0){
+            alert(alarmString)
+        }else{
+
+            // create new li element
+            let listItem = document.createElement('li');
+            // set new text
+            listItem.innerHTML = `Name: ${nameValue}, Student ID: ${idValue}, GPA: ${gpaValue}`;
+
+            //listener to check class of item clicked
+            //still sorting out the fat arrow; it works, but I don't understand why
+
+            listItem.addEventListener('click', function() {
+                // add class / change if class === selected
+                if (this.classList.contains('selected')) {
+                    this.setAttribute('class', '')
+                } else {
+                    this.classList.add('selected')
+                }
+            });
+
+            // add new li element to ul
+            studentList.appendChild(listItem);
+            //update count for number of students
+            let countUpdate = studentList.getElementsByTagName('li').length;
+            studentCountMessage.innerHTML = `${countUpdate}`
+
+            //clear fields when add button is pressed
+            studentName.value = '';
+            studentId.value = '';
+            studentGpa.value = '';
+        }
+    });
+
+    removeButton.addEventListener('click', function() {
+        //find all items with class='selected'
+        let removeList = document.querySelectorAll('.selected');
+        // loop through and remove selected items
+        removeList.forEach(function (item) {
+            item.remove()
+        })
+        // update student count
+        let countUpdate = studentList.getElementsByTagName('li').length;
+        studentCountMessage.innerHTML = `${countUpdate}`
+    })
+
+
+</script>
+<style>
+
+    li{
+        text-decoration: underline;
+    }
+</style>

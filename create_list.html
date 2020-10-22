@@ -1,0 +1,77 @@
+<!-- Oscar Chiqui | Lab: Intro to JavaScript | Class: 2560-60 Web Client Server 
+A web page with an empty unordered list, an input text box, and button. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create addEventListener</title>
+</head>
+
+<body>
+<p>Please enter some text to add to the list</p>
+<input id="new-text">
+<button id="add-text">Add</button>
+<button id="clear">Clear</button>
+
+<ul id="list-of-text">
+</ul>
+
+<!-- A clear button. All the li elements should be removed from the page so the ul list is empty.
+Prevent the user adding more than 10 items to the list.
+ If the clear button is clicked, the user may keep adding items. -->
+<script>
+    let textInput = document.querySelector('#new-text')
+    let addButton = document.querySelector('#add-text')
+    let textList = document.querySelector('#list-of-text')
+    let clearButton = document.querySelector('#clear')
+    let elementsInList = 0;
+    let maxElements = 10;
+
+    document.addEventListener('keyup', function (event){
+         console.log(event.key)
+
+        if (event.key === 'Enter'){
+            addButton.click() 
+        }
+    })
+
+//  The form should only accept text of length between 1 and 50 characters. An alert error message if it the text too long - more than 50 characters.//
+
+    addButton.addEventListener('click', function() {
+        let newText = textInput.value
+
+        if (newText.length == 0) {
+            alert('Enter some text')
+            return
+        }
+        if (newText.length > 50) {
+            alert('List Item cannot exceed 50 characters')
+            return
+        }
+
+        if(elementsInList >= maxElements){
+            alert('no more elements can be added')
+            return
+        }
+
+        let newListItem = document.createElement('li')
+        newListItem.innerHTML = newText
+        textList.appendChild(newListItem)
+        textInput.value = ''
+
+        elementsInList++
+    })
+
+    clearButton.addEventListener('click', function (){
+        textList.innerHTML = ''
+        elementsInList = 0
+    })
+
+</script>
+
+</body>
+
+</html>
+
+</body>
+</html>
